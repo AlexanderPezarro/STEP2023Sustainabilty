@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes, Navigate }
 
 import Home from "./pages/Home"
 import Schools from "./pages/Schools";
+import Aboutus from "./pages/Aboutus";
 
 export default function App() {
 
@@ -14,6 +15,7 @@ export default function App() {
                 <Routes>
                     <Route index element={<Home />} />
                     <Route path = "/schools" element = {<Schools />} />
+                    <Route path = "/Aboutus" element = {<Aboutus/>} />
                 </Routes>
             </BrowserRouter>
 

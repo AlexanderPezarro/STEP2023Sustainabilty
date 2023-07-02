@@ -49,6 +49,17 @@ export default function Home() {
                             >
                                 Courses
                             </Button>
+                             <Button
+                                key= 'course'
+                                onClick={(e) => {
+                                    console.log("click")
+                                    navigate('/aboutus')
+                                }
+                                }
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                About Us
+                            </Button>
                     </Box>
                 </Toolbar>
             </Container>
