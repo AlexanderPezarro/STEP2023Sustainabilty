@@ -3,9 +3,10 @@ import React from "react";
 import { BrowserRouter, Route, Routes, Navigate }
     from 'react-router-dom';
 
-import Home from "./pages/Home"
+import Home from "./compoments/Header"
 import Schools from "./pages/Schools";
 import Aboutus from "./pages/Aboutus";
+import Layout from "./compoments/Layout";
 
 export default function App() {
 
@@ -13,9 +14,10 @@ export default function App() {
         <div className="App">
             <BrowserRouter>
                 <Routes>
-                    <Route index element={<Home />} />
-                    <Route path = "/schools" element = {<Schools />} />
-                    <Route path = "/aboutus" element = {<Aboutus/>} />
+                    <Route element={<Layout />} >
+                        <Route path="/" element={<Schools />} />
+                        <Route path="/aboutus" element={<Aboutus />} />
+                    </Route>
                 </Routes>
             </BrowserRouter>
 

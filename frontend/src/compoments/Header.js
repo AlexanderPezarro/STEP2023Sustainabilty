@@ -11,14 +11,14 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from "react-router-dom";
 
 
-export default function Home() {
+export default function Header() {
     const navigate = useNavigate()
 
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                   
                     <Typography
                         variant="h6"
                         noWrap
@@ -42,12 +42,12 @@ export default function Home() {
                                 key= 'course'
                                 onClick={(e) => {
                                     console.log("click")
-                                    navigate('/schools')
+                                    navigate('/leadrbord')
                                 }
                                 }
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
-                                Courses
+                                LeaderBoard
                             </Button>
                              <Button
                                 key= 'course'
