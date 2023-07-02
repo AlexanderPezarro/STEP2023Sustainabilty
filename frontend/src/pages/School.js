@@ -10,7 +10,7 @@ import ListItem from '@mui/material/ListItem';
 export default function School() {
     const [school, setSchool] = useState("hello");
     const params = useParams()
-    const [modules, setModules] = useState(['AA1000','AA1001','AA1002'])
+    const [modules, setModules] = useState(['AH1001','AH1002','AH1003'])
 
     useEffect(() => {
         setSchool(params.school)
