@@ -1,11 +1,19 @@
-const express = require('express')
-const app = express()
-const port = 3000
+import express from 'express'
+import * as dotenv from "dotenv";
+import routes from './routes';
+dotenv.config({path: __dirname + "/../.env"});
+
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+const HOST = process.env.HOST ?? "localhost";
+
+const app = express();
 
 app.get('/', (req, res) => {
   res.send('Hello STEP 2023!')
-})
+});
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+app.use(routes);
+
+app.listen(PORT, HOST, () => {
+  console.log(`Backend running on http(s)://${HOST}:${PORT}`);
+});
