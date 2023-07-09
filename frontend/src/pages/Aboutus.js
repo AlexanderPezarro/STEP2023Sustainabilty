@@ -22,7 +22,7 @@ export default function () {
                     flexWrap: 'wrap',
                     '& > :not(style)': {
                         mx: "auto",
-                        my: 5
+                        
                     },
                 }}
             >
