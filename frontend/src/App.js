@@ -3,10 +3,12 @@ import React from "react";
 import { BrowserRouter, Route, Routes, Navigate }
     from 'react-router-dom';
 
-import Home from "./compoments/Header"
-import Schools from "./pages/Schools";
+import Home from "./pages/Home";
 import Aboutus from "./pages/Aboutus";
+import LeaderBoard from "./pages/Leaderboard";
 import Layout from "./compoments/Layout";
+import School from "./pages/School";
+import Module from "./pages/Module";
 
 export default function App() {
 
@@ -15,8 +17,11 @@ export default function App() {
             <BrowserRouter>
                 <Routes>
                     <Route element={<Layout />} >
-                        <Route path="/" element={<Schools />} />
+                        <Route path="/" element={<Home />} />
                         <Route path="/aboutus" element={<Aboutus />} />
+                        <Route path = "/leaderboard" element = {<LeaderBoard/>} />
+                        <Route path = "/:school" element = {<School/>}/>
+                        <Route path = "/:school/:module" element = {<Module/>}/>
                     </Route>
                 </Routes>
             </BrowserRouter>

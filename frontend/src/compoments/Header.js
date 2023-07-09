@@ -39,10 +39,10 @@ export default function Header() {
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                             <Button
-                                key= 'course'
+                                key= 'leaderboard'
                                 onClick={(e) => {
                                     console.log("click")
-                                    navigate('/leadrbord')
+                                    navigate('/leaderboard')
                                 }
                                 }
                                 sx={{ my: 2, color: 'white', display: 'block' }}
@@ -50,7 +50,7 @@ export default function Header() {
                                 LeaderBoard
                             </Button>
                              <Button
-                                key= 'course'
+                                key= 'aboutus'
                                 onClick={(e) => {
                                     console.log("click")
                                     navigate('/aboutus')
