@@ -28,3 +28,15 @@ export function getModulesFromSchool(school) {
     console.log("Query getModulesFromSchool");
     return pool.query("select * from module where school = ?", [school]);
 }
+
+// Getting a module using its name
+export function getModulesFromName(name) {
+    console.log("Query getModulesFromName");
+    return pool.query("select * from module where name like ?", [name]);
+}
+
+// Getting a module using its code
+export function getModulesFromCode(code) {
+    console.log("Query getModulesFromCode");
+    return pool.query("select * from module where code = ?", [code]);
+}
