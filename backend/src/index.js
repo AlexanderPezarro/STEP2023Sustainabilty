@@ -1,9 +1,8 @@
+import "./config.js";
 import express from 'express'
-import * as dotenv from "dotenv";
-import routes from './routes';
-dotenv.config({path: __dirname + "/../.env"});
+import routes from './routes.js';
 
-const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
 const HOST = process.env.HOST ?? "localhost";
 
 const app = express();

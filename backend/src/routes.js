@@ -1,5 +1,5 @@
 import express from "express";
-import { getModulesFromCode, getModulesFromName } from "./database";
+import { getSchools, getModulesFromSchool, getModulesFromName, getModulesFromCode, getModules } from "./database.js";
 
 const routes = express.Router();
 
