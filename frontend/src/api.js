@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export const apiurl = process.env.PORT ? `http://localhost:${process.env.PORT}/api/` : `http://localhost:3000/api/`;
+export const apiurl = process.env.PORT ? `http://localhost:${process.env.PORT}/api/` : `http://localhost:3001/api/`;
 
 export function getSchools(){
     return axios.get(`${apiurl}school`);

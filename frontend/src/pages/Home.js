@@ -9,8 +9,9 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { useEffect, useState } from 'react';
 import { useParams,Link } from 'react-router-dom';
+import { getSchools } from '../api';
 
-const schools = ['Arabic', 'Art', 'Biology']
+// const schools = ['Arabic', 'Art', 'Biology']
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -24,11 +25,17 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function Home() {
     const params = useParams()
 
-    const [school, setSchool] = useState(null)
+    const [schools, setSchool] = useState([])
 
     useEffect(() => {
-        
-    },[params])
+        getSchools()
+        .then(res => {
+            setSchool(res.data);
+        }).catch(err => {
+            console.log(`Home.js: ${err}`);
+            setSchool(["No schools"]);
+        })
+    },[])
     
     return (
         <Container sx={{ mx: "auto", my: 10 }}>
@@ -63,11 +70,11 @@ export default function Home() {
                         >
                             {schools.map((school) =>
                                     <ListItem
-                                        key={school}
+                                        key={school.name}
                                         disableGutters
                                     >
-                                        <Link to = {`/${school}`} key = {school}>
-                                        <Typography color="d0d3d4" variant="h5" component="span">{school}</Typography>
+                                        <Link to = {`/${school.name}`} key = {school.name}>
+                                        <Typography color="d0d3d4" variant="h5" component="span">{school.name}</Typography>
                                         </Link>
                                     </ListItem>
                             )}

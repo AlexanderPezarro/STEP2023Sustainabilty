@@ -1,7 +1,10 @@
 import express from "express";
+import cors from "cors";
 import { getSchools, getModulesFromSchool, getModulesFromName, getModulesFromCode, getModules } from "./database.js";
 
 const routes = express.Router();
+
+routes.use(cors());
 
 routes.get("/api/school", (req, res, next) => {
     getSchools()
