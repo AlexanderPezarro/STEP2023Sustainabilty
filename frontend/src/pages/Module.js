@@ -2,9 +2,10 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Container } from "@mui/material"
 import Typography from '@mui/material/Typography';
+import { getModuleFromCode } from "../api";
 
 export default function Module() {
-    const [module, setModule] = useState("hello")
+    const [module, setModule] = useState(undefined);
     const params = useParams()
     const [info, setInfo] = useState({
         name: "Art in Europe and Beyond to 1600",
@@ -13,7 +14,32 @@ export default function Module() {
 
     useEffect(() => {
         setModule(params.module)
-    })
+    }, [params]);
+
+    useEffect(() => {
+        if (module !== undefined) {
+            getModuleFromCode(module)
+            .then(res => {
+                if (res.data !== undefined && res.data.length === 0) {
+                    setInfo({
+                        name: "N/A",
+                        description: "N/A"
+                    });
+                } else {
+                    setInfo({
+                        name: res.data[0].name,
+                        description: "N/A"
+                    });
+                }
+            }).catch(err => {
+                console.log(`Module.js: ${err}`);
+                setInfo({
+                    name: "N/A",
+                    description: "N/A"
+                });
+            })
+        }
+    },[module]);
 
     return (
         <Container sx={{ mx: "auto", my: 10 }}>
