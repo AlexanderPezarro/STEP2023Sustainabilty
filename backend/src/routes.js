@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { getSchools, getModulesFromSchool, getModulesFromName, getModulesFromCode, getModules } from "./database.js";
+import { getSchools, getModulesFromSchool, getModulesFromName, getModulesFromCode, getModules, getSurveyQuestions, getSurveyIds } from "./database.js";
 
 const routes = express.Router();
 
@@ -47,6 +47,28 @@ routes.get("/api/module", (req, res, next) => {
         });
     } else {
         getModules()
+        .then(rows => {
+        res.send(rows);
+        })
+        .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+        });
+    }
+});
+
+routes.get("/api/survey", (req, res, next) => {
+    if (req.query.id !== undefined) {
+        getSurveyQuestions(req.query.id)
+        .then(rows => {
+        res.send(rows);
+        })
+        .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+        });
+    } else {
+        getSurveyIds()
         .then(rows => {
         res.send(rows);
         })

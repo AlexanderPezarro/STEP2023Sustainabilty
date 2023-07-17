@@ -40,3 +40,15 @@ export function getModulesFromCode(code) {
     console.log("Query getModulesFromCode");
     return pool.query("select * from module where code = ?", [code]);
 }
+
+// Getting all the questions from a survey
+export function getSurveyQuestions(id) {
+    console.log("Query getSurveyQuestions");
+    return pool.query("select * from survey where id = ? order by number", [id]);
+}
+
+// Getting all the questions from a survey
+export function getSurveyIds() {
+    console.log("Query getSurveyIds");
+    return pool.query("select id from survey");
+}

@@ -21,3 +21,11 @@ export function getModuleFromSchool(school){
 export function getModuleFromCode(code){
     return axios.get(`${apiurl}module?code=${code}`);
 }
+
+export function getSurveyQuestions(id){
+    return axios.get(`${apiurl}survey?id=${id}`);
+}
+
+export function getSurveyIds(){
+    return axios.get(`${apiurl}survey`);
+}
