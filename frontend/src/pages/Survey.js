@@ -8,7 +8,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Input from '@mui/material/Input';
-import { useAsyncError } from "react-router-dom";
+import FormControl, { useFormControl } from '@mui/material/FormControl';
+import OutlinedInput from '@mui/material/OutlinedInput';
 
 
 const steps = ['Verification', 'Answer question', 'Check Answers'];
@@ -27,24 +28,25 @@ export default function Survey() {
         return skipped.has(step);
     };
 
-    const handleNext = () => {
+    function HandleNext () {
         let newSkipped = skipped;
         if (isStepSkipped(activeStep)) {
             newSkipped = new Set(newSkipped.values());
             newSkipped.delete(activeStep);
         }
-        switch (activeStep) {
-            case 0:
-                if(id)
-                
-                break;
-        
-            default:
-                break;
+        const {filled} = useFormControl() || {};
+
+        if(filled) {
+            setComplete(true)
+        } else {
+            setComplete(false)
         }
 
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        if(complete) {
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
         setSkipped(newSkipped);
+        }
+        
 
 
 
@@ -89,12 +91,14 @@ export default function Survey() {
 
         return (
             <div>
+                
                 <Typography sx={{ mt: 2, mb: 1 }}>Q1. Enter your matriculation number</Typography>
-                <TextField required = {true} placeholder="00000000" value={val} onChange={e => {
+                <FormControl sx={{ width: '25ch' }}>
+                <OutlinedInput required placeholder="00000000" value={val} onChange={e => {
                     setVal(e.target.value)
-                    setID(e.target.value)
                     console.log(val)
                 }} />
+                </FormControl>
 
             </div>
 
@@ -172,7 +176,7 @@ export default function Survey() {
                                 </Button>
                             )}
 
-                            <Button onClick={handleNext}>
+                            <Button onClick={HandleNext}>
                                 {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                             </Button>
                         </Box>
