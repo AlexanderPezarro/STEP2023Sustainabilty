@@ -15,34 +15,30 @@ import { getModuleFromCode } from "./api";
 
 const PrivateRoute = ({ children }) => {
     const params = useParams()
-    const [module,setModule] = useState()
-    const [code,setCode] = useState()
+    const [module, setModule] = useState()
+    const [valid, setValid] = useState(true)
 
     useEffect(() => {
-        setModule(params.module)
-    },[params])
+        async function fetchData() {
+            try {
+                const res = await getModuleFromCode(params.module)
+                if (res.data[0].secret_code !== params.code) setValid(false)
+            } catch (err) {
+                console.log(err);
+                setValid(false)
+            }
+        }
 
-    useEffect(() => {
-            getModuleFromCode(module)
-            .then(res => {
-                if (res.data !== undefined && res.data.length === 1) {
-                    console.log(res.data[0].secret_code)
-                    setCode(res.data[0].secret_code)
-                } else {
-                    console.log(res.data)
-                }
-            }).catch(err => {
-                console.log(`Module.js: ${err}`);
-            })
-        
-    },[module])
+        fetchData();
+    },[])
 
-    if (code == params.code) {
-        return children;
-    }else {
-        window.alert("Invalid survey URL")
-      return  <Navigate to="/" replace={true} />
+    if (valid) {
+        return children
+    } else {
+        window.alert("Invalid URL")
+        return <Navigate to="/" replace={true} />
     }
+
 }
 
 export default function App() {
@@ -54,10 +50,10 @@ export default function App() {
                     <Route element={<Layout />} >
                         <Route path="/" element={<Home />} />
                         <Route path="/aboutus" element={<Aboutus />} />
-                        <Route path = "/leaderboard" element = {<LeaderBoard/>} />
-                        <Route path = "/:school" element = {<School/>}/>
-                        <Route path = "/:school/:module" element = {<Module/>}/>
-                        <Route path = "/:school/:module/survey/:code" element = {<PrivateRoute><Survey/></PrivateRoute>}/>
+                        <Route path="/leaderboard" element={<LeaderBoard />} />
+                        <Route path="/:school" element={<School />} />
+                        <Route path="/:school/:module" element={<Module />} />
+                        <Route path="/:school/:module/survey/:code" element={<PrivateRoute><Survey /></PrivateRoute>} />
                     </Route>
                 </Routes>
             </BrowserRouter>
@@ -65,3 +61,5 @@ export default function App() {
         </div>
     );
 }
+
+
