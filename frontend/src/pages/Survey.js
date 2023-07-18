@@ -10,180 +10,86 @@ import TextField from '@mui/material/TextField';
 import Input from '@mui/material/Input';
 import FormControl, { useFormControl } from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import { getSurveyQuestions } from "../api";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 
 const steps = ['Verification', 'Answer question', 'Check Answers'];
+const ariaLabel = { 'aria-label': 'description' };
+
+
 
 export default function Survey() {
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [skipped, setSkipped] = React.useState(new Set());
-    const [id, setID] = React.useState();
-    const [complete, setComplete] = React.useState(false)
 
-    const isStepOptional = (step) => {
-        return step === -1;
+    const [questions, setQuestions] = useState(['What is your matriculation number?']);
+    const [module, setModule] = useState("CS1002")
+    const params = useParams()
+    const [answers, setAnswers] = useState([
+        { question: 'What is your matriculation number?', answer: "" },
+    ]);
+
+    React.useEffect(() => {
+        setModule(params.module)
+    }, [params])
+
+    React.useEffect(() => {
+        getSurveyQuestions(1).then(res => {
+            if (res.data !== undefined && res.data.length === 0) {
+                setQuestions(["No questions"]);
+            } else {
+                setQuestions(res.data);
+                console.log("Response", res.data)
+            }
+        }).catch(err => {
+            console.log(`Questions.js: ${err}`);
+            setQuestions(["No questions"]);
+        })
+    }, [module])
+
+    const updateAnswer = (question, answer) => {
+        setAnswers((prevState) =>
+            prevState.map((obj) => (obj.question === question ? { question: obj.question, answer: answer } : obj)))
     };
 
-    const isStepSkipped = (step) => {
-        return skipped.has(step);
-    };
+    const addAnswer = (question, answer) => {
+        console.log(question, answer)
+        setAnswers((prevState) => [...prevState, { question: question, answer: answer }]);
+    }
 
-    function HandleNext () {
-        let newSkipped = skipped;
-        if (isStepSkipped(activeStep)) {
-            newSkipped = new Set(newSkipped.values());
-            newSkipped.delete(activeStep);
-        }
-        const {filled} = useFormControl() || {};
-
-        if(filled) {
-            setComplete(true)
-        } else {
-            setComplete(false)
-        }
-
-        if(complete) {
-            setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setSkipped(newSkipped);
-        }
+    React.useEffect(() => {
         
+        questions.map((question) => {
+            addAnswer(question.question, "")
+        })
+    }, [questions])
 
-
-
-    };
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-
-
-    const handleSkip = () => {
-        if (!isStepOptional(activeStep)) {
-            // You probably want to guard against something like this,
-            // it should never occur unless someone's actively trying to break something.
-            throw new Error("You can't skip a step that isn't optional.");
-        }
-
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setSkipped((prevSkipped) => {
-            const newSkipped = new Set(prevSkipped.values());
-            newSkipped.add(activeStep);
-            return newSkipped;
-        });
-    };
-
-    const handleReset = () => {
-        setActiveStep(0);
-    };
-
-    const pages = () => {
-
-        switch (activeStep) {
-
-            case 0: return <Entry />;
-            default: return <Question />
-        }
+    const hadleSubmit = () => {
+        console.log(answers)
     }
-
-    const Entry = () => {
-        const [val, setVal] = React.useState("")
-
-        return (
-            <div>
-                
-                <Typography sx={{ mt: 2, mb: 1 }}>Q1. Enter your matriculation number</Typography>
-                <FormControl sx={{ width: '25ch' }}>
-                <OutlinedInput required placeholder="00000000" value={val} onChange={e => {
-                    setVal(e.target.value)
-                    console.log(val)
-                }} />
-                </FormControl>
-
-            </div>
-
-        )
-    }
-
-    const Question = () => {
-
-        return (
-            <div>
-                <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
-                <TextField
-                    required
-                    id="outlined-required"
-                    label="Required"
-                />
-            </div>
-
-        )
-    }
-
-
 
     return (
         <Container sx={{ mx: "auto", my: 10 }}>
-            <Box sx={{ width: '100%' }}>
-                <Stepper activeStep={activeStep}>
+            <Typography color="d0d3d4" variant="h3" component="span">Survey -{module}-</Typography>
+            <br></br>
 
-                    {steps.map((label, index) => {
-                        const stepProps = {};
-                        const labelProps = {};
-                        if (isStepOptional(index)) {
-                            labelProps.optional = (
-                                <Typography variant="caption">Optional</Typography>
-                            );
-                        }
-                        if (isStepSkipped(index)) {
-                            stepProps.completed = false;
-                        }
-                        return (
-                            <Step key={label} {...stepProps}>
-                                <StepLabel {...labelProps}>{label}</StepLabel>
-                            </Step>
-                        );
-                    })}
-                </Stepper>
-                {activeStep === steps.length ? (
-                    <React.Fragment>
-                        <Typography sx={{ mt: 2, mb: 1 }}>
-                            All steps completed - you&apos;re finished
-                        </Typography>
-                        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                            <Box sx={{ flex: '1 1 auto' }} />
-                            <Button onClick={handleReset}>Reset</Button>
-                        </Box>
-                    </React.Fragment>
-                ) : (
-                    <React.Fragment>
+            {questions.map((question, index) => {
+                return (<div>
+                    <Typography color="d0d3d4" variant="h4" component="span">
+                        Q{index + 1}. {question.question}
+                    </Typography>
+                    <br></br>
+                    <FormControl>
+                        <OutlinedInput fullWidth onChange={e => updateAnswer(question.question, e.target.value)} />
+                    </FormControl>
+                </div>)
+            })}
 
-                        {pages({ activeStep })}
-                        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+            <Button variant="contained" onClick={hadleSubmit}>Submit</Button>
 
-                            <Button
-                                color="inherit"
-                                disabled={activeStep === 0}
-                                onClick={handleBack}
-                                sx={{ mr: 1 }}
-                            >
-                                Back
-                            </Button>
-                            <Box sx={{ flex: '1 1 auto' }} />
-                            {isStepOptional(activeStep) && (
-                                <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                                    Skip
-                                </Button>
-                            )}
 
-                            <Button onClick={HandleNext}>
-                                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                            </Button>
-                        </Box>
-                    </React.Fragment>
-                )}
-            </Box>
+
         </Container>
-    );
+    )
 }
 
