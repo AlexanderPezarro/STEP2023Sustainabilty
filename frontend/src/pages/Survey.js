@@ -1,22 +1,17 @@
 import { Container } from "@mui/material";
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Input from '@mui/material/Input';
 import FormControl, { useFormControl } from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { getSurveyQuestions } from "../api";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import Button from '@mui/material/Button';
 
 
 const steps = ['Verification', 'Answer question', 'Check Answers'];
 const ariaLabel = { 'aria-label': 'description' };
+
 
 
 
@@ -58,7 +53,7 @@ export default function Survey() {
     }
 
     React.useEffect(() => {
-        
+        setAnswers([{ question: 'What is your matriculation number?', answer: "" }])
         questions.map((question) => {
             addAnswer(question.question, "")
         })
@@ -66,26 +61,25 @@ export default function Survey() {
 
     const hadleSubmit = () => {
         console.log(answers)
+
     }
 
     return (
         <Container sx={{ mx: "auto", my: 10 }}>
             <Typography color="d0d3d4" variant="h3" component="span">Survey -{module}-</Typography>
             <br></br>
-
-            {questions.map((question, index) => {
+            {answers.map((answer, index) => {
                 return (<div>
                     <Typography color="d0d3d4" variant="h4" component="span">
-                        Q{index + 1}. {question.question}
+                        Q{index + 1}. {answer.question}
                     </Typography>
                     <br></br>
-                    <FormControl>
-                        <OutlinedInput fullWidth onChange={e => updateAnswer(question.question, e.target.value)} />
-                    </FormControl>
+                        <OutlinedInput fullWidth onChange={e => updateAnswer(answer.question, e.target.value)} />
+                    
                 </div>)
             })}
 
-            <Button variant="contained" onClick={hadleSubmit}>Submit</Button>
+<Button variant="contained" onClick={hadleSubmit}>Submit</Button>
 
 
 
