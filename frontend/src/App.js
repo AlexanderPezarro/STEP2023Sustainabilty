@@ -40,6 +40,7 @@ const PrivateRoute = ({ children }) => {
     if (code == params.code) {
         return children;
     }else {
+        window.alert("Invalid survey URL")
       return  <Navigate to="/" replace={true} />
     }
 }
