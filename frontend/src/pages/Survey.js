@@ -7,6 +7,10 @@ import { getSurveyQuestions } from "../api";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Button from '@mui/material/Button';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
 
 
 const steps = ['Verification', 'Answer question', 'Check Answers'];
@@ -69,17 +73,31 @@ export default function Survey() {
             <Typography color="d0d3d4" variant="h3" component="span">Survey -{module}-</Typography>
             <br></br>
             {answers.map((answer, index) => {
-                return (<div>
-                    <Typography color="d0d3d4" variant="h4" component="span">
-                        Q{index + 1}. {answer.question}
-                    </Typography>
-                    <br></br>
-                        <OutlinedInput fullWidth onChange={e => updateAnswer(answer.question, e.target.value)} />
-                    
-                </div>)
+                return (
+                    <div>
+                        <Typography color="d0d3d4" variant="h4" component="span">
+                            Q{index + 1}. {answer.question}
+                        </Typography>
+                        <br></br>
+                        {index % 2 == 0 ? (<OutlinedInput fullWidth onChange={e => updateAnswer(answer.question, e.target.value)} />) : (
+                            <FormControl>
+                                <RadioGroup
+                                    row
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                    name="row-radio-buttons-group"
+                                    onChange={(e => updateAnswer(answer.question, e.target.value))}
+                                >
+                                    <FormControlLabel value="Agree" control={<Radio />} label="Agree" />
+                                    <FormControlLabel value="Neutral" control={<Radio />} label="Neutral" />
+                                    <FormControlLabel value="Disagree" control={<Radio />} label="Disagree" />
+                                </RadioGroup>
+                            </FormControl>
+                        )}
+
+                    </div>)
             })}
 
-<Button variant="contained" onClick={hadleSubmit}>Submit</Button>
+            <Button variant="contained" onClick={hadleSubmit}>Submit</Button>
 
 
 
