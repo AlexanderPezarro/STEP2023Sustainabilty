@@ -126,7 +126,7 @@ export default function Survey() {
                         <Grid item xs={12}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
-                                    <Typography color="d0d3d4" variant="h4" component="span">
+                                    <Typography color="d0d3d4"  component="span">
                                         Q{index + 1}. {answer.question}
                                     </Typography>
                                 </Grid>
