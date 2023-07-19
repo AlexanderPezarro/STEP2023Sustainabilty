@@ -52,3 +52,14 @@ export function getSurveyIds() {
     console.log("Query getSurveyIds");
     return pool.query("select id from survey");
 }
+
+// Gets evey code with the given code and module_code
+export function getSurveyCode(code, moduleCode) {
+    console.log("Query getSurveyCode");
+    return pool.query("select code from code where code = ? and module_code = ?", [code, moduleCode]);
+}
+
+export function insertResult(marticNumber, moduleCode, code, surveyID, questionNumber, resultNumber, resultText) {
+    console.log("Query insertResult");
+    return pool.query("insert result values(?, ?, ?, ?, ?, ?, ?)", [marticNumber, moduleCode, code, surveyID, questionNumber, resultNumber, resultText]);
+}
