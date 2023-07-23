@@ -61,5 +61,10 @@ export function getSurveyCode(code, moduleCode) {
 
 export function insertResult(marticNumber, moduleCode, surveyID, questionNumber, resultNumber, resultText) {
     console.log("Query insertResult");
-    return pool.query("insert result values(?, ?, ?, ?, ?, ?, ?)", [marticNumber, moduleCode, code, surveyID, questionNumber, resultNumber, resultText]);
+    return pool.query("insert results values(?, ?, ?, ?, ?, ?)", [marticNumber, moduleCode, surveyID, questionNumber, resultNumber, resultText]);
+}
+
+export function insertResults(results) {
+    console.log("Query insertResult");
+    return pool.batch("insert results values(?, ?, ?, ?, ?, ?)", results);
 }

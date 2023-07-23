@@ -1,10 +1,11 @@
 import express from "express";
 import cors from "cors";
-import { getSchools, getModulesFromSchool, getModulesFromName, getModulesFromCode, getModules, getSurveyQuestions, getSurveyIds, getSurveyCode, insertResult } from "./database.js";
+import { getSchools, getModulesFromSchool, getModulesFromName, getModulesFromCode, getModules, getSurveyQuestions, getSurveyIds, getSurveyCode, insertResult, insertResults } from "./database.js";
 
 const routes = express.Router();
 
 routes.use(cors());
+routes.use(express.json());
 
 routes.get("/api/school", (req, res, next) => {
     getSchools()
@@ -80,7 +81,7 @@ routes.get("/api/survey", (req, res, next) => {
 });
 
 routes.post("/api/code", (req, res, next) => {
-    if (req.params.code !== undefined && req.params.moduleCode !== undefined) {
+    if (req.body.code !== undefined && req.body.moduleCode !== undefined) {
         getSurveyCode(req.query.id)
         .then(rows => {
             if (rows.lenth > 0) {
@@ -99,13 +100,13 @@ routes.post("/api/code", (req, res, next) => {
 });
 
 routes.post("/api/result", (req, res, next) => {
-    if (req.params.marticNumber !== undefined &&
-        req.params.moduleCode !== undefined &&
-        req.params.surveyID !== undefined &&
-        req.params.questionNumber !== undefined) {
-        insertResult(req.params.marticNumber, req.params.moduleCode, req.params.surveyID, req.params.questionNumber,
-            req.params.resultNumber === undefined ? null : req.params.resultNumber,
-            req.params.resultText === undefined ? null : req.params.resultText)
+    if (req.body.marticNumber !== undefined &&
+        req.body.moduleCode !== undefined &&
+        req.body.surveyID !== undefined &&
+        req.body.questionNumber !== undefined) {
+        insertResult(req.body.marticNumber, req.body.moduleCode, req.body.surveyID, req.body.questionNumber,
+            req.body.resultNumber === undefined ? null : req.body.resultNumber,
+            req.body.resultText === undefined ? null : req.body.resultText)
         .then(_ => {
             res.status(200).end(); 
         })
@@ -116,6 +117,23 @@ routes.post("/api/result", (req, res, next) => {
     } else {
         console.log(req.params)
         res.status(400).send(err);
+    }
+});
+
+routes.post("/api/results", (req, res, next) => {
+    if (req.body.moduleCode !== undefined &&
+        req.body.surveyID !== undefined &&
+        req.body.answers !== undefined) {
+        insertResults(req.body.answers.slice(1).map((elem,i) => [req.body.answers[0], req.body.moduleCode, req.body.surveyID, i+1, undefined, elem]))
+        .then(_ => {
+            res.status(200).end(); 
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send(err);
+        });
+    } else {
+        res.status(400).end();
     }
 });
 
