@@ -86,30 +86,21 @@ export default function Survey() {
     }
 
     const hadleSubmit = () => {
-        async function checkError() {
-            setError([])
-            await answers.map((answer,index) => {
-                if (answer.answer.length === 0) {
-                    setError((prevState) => [...prevState, `Q${index+1} is not Filled!`])
+        setError([])
+        answers.forEach((answer,index) => {
+            if (answer.answer.length === 0) {
+                setError((prevState) => [...prevState, `Q${index+1} is not Filled!`])
+                return
+            }
+            if (answer.question === 'What is your matriculation number?') {
+                if (answer.answer.length !== 9 || isNaN(answer.answer)) {
+                    setError((prevState) => [...prevState, 'Matriculation number is should be 9 numbers.'])
                     return
                 }
-                if (answer.question === 'What is your matriculation number?') {
-                    if (answer.answer.length !== 9 || isNaN(answer.answer)) {
-                        setError((prevState) => [...prevState, 'Matriculation number is should be 9 numbers.'])
-                        return
-                    }
-                }
-            })
+            }
+        })
 
-        }
-
-
-
-
-        checkError();
         console.log(answers)
-        
-
     }
 
     return (

@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { getSchools, getModulesFromSchool, getModulesFromName, getModulesFromCode, getModules, getSurveyQuestions, getSurveyIds, getSurveyCode, insertResult } from "./database.js";
+import { getSchools, getModulesFromSchool, getModulesFromName, getModulesFromCode, getModules, getSurveyQuestions, getSurveyIds, getSurveyCode, insertResult, insertResults } from "./database.js";
 
 const routes = express.Router();
 
@@ -100,13 +100,29 @@ routes.post("/api/code", (req, res, next) => {
 
 routes.post("/api/result", (req, res, next) => {
     if (req.params.marticNumber !== undefined &&
-        req.params.code !== undefined &&
         req.params.moduleCode !== undefined &&
         req.params.surveyID !== undefined &&
         req.params.questionNumber !== undefined) {
-        insertResult(req.params.marticNumber, req.params.code, req.params.moduleCode, req.params.surveyID, req.params.questionNumber,
+        insertResult(req.params.marticNumber, req.params.moduleCode, req.params.surveyID, req.params.questionNumber,
             req.params.resultNumber === undefined ? null : req.params.resultNumber,
             req.params.resultText === undefined ? null : req.params.resultText)
+        .then(_ => {
+            res.status(200).end(); 
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send(err);
+        });
+    } else {
+        res.status(400).send(err);
+    }
+});
+
+routes.post("/api/results", (req, res, next) => {
+    if (req.params.moduleCode !== undefined &&
+        req.params.surveyID !== undefined &&
+        req.params.answers !== undefined) {
+        insertResults(answers.slice(1).map(elem => [req.params.answers[0], req.params.moduleCode, req.params.surveyID, req.params.questionNumber, undefined, elem]))
         .then(_ => {
             res.status(200).end(); 
         })

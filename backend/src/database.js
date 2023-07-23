@@ -59,7 +59,12 @@ export function getSurveyCode(code, moduleCode) {
     return pool.query("select code from code where code = ? and module_code = ?", [code, moduleCode]);
 }
 
-export function insertResult(marticNumber, moduleCode, code, surveyID, questionNumber, resultNumber, resultText) {
+export function insertResult(marticNumber, moduleCode, surveyID, questionNumber, resultNumber, resultText) {
     console.log("Query insertResult");
-    return pool.query("insert result values(?, ?, ?, ?, ?, ?, ?)", [marticNumber, moduleCode, code, surveyID, questionNumber, resultNumber, resultText]);
+    return pool.query("insert result values(?, ?, ?, ?, ?, ?)", [marticNumber, moduleCode, code, surveyID, questionNumber, resultNumber, resultText]);
+}
+
+export function insertResults(results) {
+    console.log("Query insertResult");
+    return pool.batch("insert result values(?, ?, ?, ?, ?, ?, ?)", results);
 }
