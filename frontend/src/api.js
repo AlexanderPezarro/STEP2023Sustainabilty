@@ -29,3 +29,7 @@ export function getSurveyQuestions(id){
 export function getSurveyIds(){
     return axios.get(`${apiurl}survey`);
 }
+
+export function postResults(moduleCode, surveyID, answers){
+    return axios.get(`${apiurl}results`, {moduleCode, surveyID, answers});
+}
