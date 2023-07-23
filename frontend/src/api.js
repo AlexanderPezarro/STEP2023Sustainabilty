@@ -32,5 +32,5 @@ export function getSurveyIds() {
 }
 
 export function postResults(moduleCode, surveyID, answers){
-    return axios.get(`${apiurl}results`, {moduleCode, surveyID, answers});
+    return axios.post(`${apiurl}results`, {moduleCode, surveyID, answers});
 }

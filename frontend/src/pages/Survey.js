@@ -23,6 +23,7 @@ const ariaLabel = { 'aria-label': 'description' };
 export default function Survey() {
     const [matricNum, setMatricNum] = useState("")
     const [questions, setQuestions] = useState(['What is your matriculation number?']);
+    const [types,setTypes] = useState([{ question: 'What is your matriculation number?',type: 1}])
     const [module, setModule] = useState("")
     const [course, setCourse] = useState("")
     const [surveyID, setSurveyID] = useState(1)
@@ -47,7 +48,10 @@ export default function Survey() {
                 if (res.data !== undefined && res.data.length === 0) {
                     setQuestions(["No questions"]);
                 } else {
-                    setQuestions(res.data);
+                    res.data.map((data) => {
+                        setTypes((prevState) => [...prevState,data.type])
+                    })
+                    setQuestions(res.data)
                     console.log("Response", res.data)
                 }
             }).catch(err => {
@@ -73,10 +77,17 @@ export default function Survey() {
 
     }
 
+    const addType = (question,type) => {
+        console.log(question,type)
+        setTypes((prevState) => [...prevState, { question: question, type: type }]);
+
+    }
+
     React.useEffect(() => {
         setAnswers([{ question: 'What is your matriculation number?', answer: "" }])
         questions.map((question) => {
             addAnswer(question.question, "")
+            addType(question.question,question.type)
         })
     }, [questions])
 
