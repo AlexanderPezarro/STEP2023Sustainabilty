@@ -3,7 +3,7 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import FormControl, { useFormControl } from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { getModuleFromCode, getSurveyQuestions } from "../api";
+import { getModuleFromCode, getSurveyQuestions, postSurveyResult } from "../api";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Button from '@mui/material/Button';
@@ -21,10 +21,11 @@ const ariaLabel = { 'aria-label': 'description' };
 
 
 export default function Survey() {
-
+    const [matricNum, setMatricNum] = useState("")
     const [questions, setQuestions] = useState(['What is your matriculation number?']);
     const [module, setModule] = useState("")
     const [course, setCourse] = useState("")
+    const [surveyID, setSurveyID] = useState(1)
     const params = useParams()
     const [answers, setAnswers] = useState([
         { question: 'What is your matriculation number?', answer: "" },
@@ -36,30 +37,37 @@ export default function Survey() {
     }, [params])
 
     React.useEffect(() => {
-        getSurveyQuestions(1).then(res => {
-            if (res.data !== undefined && res.data.length === 0) {
-                setQuestions(["No questions"]);
-            } else {
-                setQuestions(res.data);
-                console.log("Response", res.data)
-            }
-        }).catch(err => {
-            console.log(`Questions.js: ${err}`);
-            setQuestions(["No questions"]);
-        })
-
         getModuleFromCode(params.module).then(res => {
             console.log(res.data)
             setCourse(res.data[0].name)
+            setSurveyID(res.data[0].surveyID)
+            return res.data[0].surveyID
+        }).then(res => {
+            getSurveyQuestions(res).then(res => {
+                if (res.data !== undefined && res.data.length === 0) {
+                    setQuestions(["No questions"]);
+                } else {
+                    setQuestions(res.data);
+                    console.log("Response", res.data)
+                }
+            }).catch(err => {
+                console.log(`Questions.js: ${err}`);
+                setQuestions(["No questions"]);
+            })
         })
+        
+
+        
     }, [module])
 
     const updateAnswer = (question, answer) => {
+        if(question == 'What is your matriculation number?') setMatricNum(answer)
         setAnswers((prevState) =>
             prevState.map((obj) => (obj.question === question ? { question: obj.question, answer: answer } : obj)))
     };
 
     const addAnswer = (question, answer) => {
+        if(question == 'What is your matriculation number?') setMatricNum(answer)
         console.log(question, answer)
         setAnswers((prevState) => [...prevState, { question: question, answer: answer }]);
     }
@@ -106,7 +114,28 @@ export default function Survey() {
 
 
 
-        checkError();
+       
+        async function sendData() {
+            await answers.map((answer,index) => {
+                if(index > 0) {
+                    postSurveyResult({
+                        marticNumber: matricNum,
+                        moduleCode: module,
+                        surveyID: surveyID,
+                        questionNumber: index,
+                        resultText: answer.answer
+                    })
+                }
+                
+            })
+        }
+        
+        
+        checkError()
+        sendData()
+        
+        
+        
         console.log(answers)
         
 
@@ -131,6 +160,7 @@ export default function Survey() {
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12}>
+
                                     {index % 2 == 0 ? (<OutlinedInput fullWidth onChange={e => updateAnswer(answer.question, e.target.value)} />) : (
                                         <FormControl>
                                             <RadioGroup

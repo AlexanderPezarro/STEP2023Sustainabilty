@@ -100,11 +100,10 @@ routes.post("/api/code", (req, res, next) => {
 
 routes.post("/api/result", (req, res, next) => {
     if (req.params.marticNumber !== undefined &&
-        req.params.code !== undefined &&
         req.params.moduleCode !== undefined &&
         req.params.surveyID !== undefined &&
         req.params.questionNumber !== undefined) {
-        insertResult(req.params.marticNumber, req.params.code, req.params.moduleCode, req.params.surveyID, req.params.questionNumber,
+        insertResult(req.params.marticNumber, req.params.moduleCode, req.params.surveyID, req.params.questionNumber,
             req.params.resultNumber === undefined ? null : req.params.resultNumber,
             req.params.resultText === undefined ? null : req.params.resultText)
         .then(_ => {
@@ -115,6 +114,7 @@ routes.post("/api/result", (req, res, next) => {
             res.status(500).send(err);
         });
     } else {
+        console.log(req.params)
         res.status(400).send(err);
     }
 });
