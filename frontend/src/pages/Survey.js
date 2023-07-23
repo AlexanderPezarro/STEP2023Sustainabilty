@@ -3,7 +3,7 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import FormControl, { useFormControl } from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { getModuleFromCode, getSurveyQuestions, postSurveyResult } from "../api";
+import { getModuleFromCode, getSurveyQuestions, postResults } from "../api";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Button from '@mui/material/Button';
@@ -55,21 +55,22 @@ export default function Survey() {
                 setQuestions(["No questions"]);
             })
         })
-        
 
-        
+
+
     }, [module])
 
     const updateAnswer = (question, answer) => {
-        if(question == 'What is your matriculation number?') setMatricNum(answer)
+        if (question == 'What is your matriculation number?') setMatricNum(answer)
         setAnswers((prevState) =>
             prevState.map((obj) => (obj.question === question ? { question: obj.question, answer: answer } : obj)))
     };
 
     const addAnswer = (question, answer) => {
-        if(question == 'What is your matriculation number?') setMatricNum(answer)
+        if (question == 'What is your matriculation number?') setMatricNum(answer)
         console.log(question, answer)
         setAnswers((prevState) => [...prevState, { question: question, answer: answer }]);
+
     }
 
     React.useEffect(() => {
@@ -95,9 +96,10 @@ export default function Survey() {
 
     const hadleSubmit = () => {
         setError([])
-        answers.forEach((answer,index) => {
+        var list = []
+        answers.forEach((answer, index) => {
             if (answer.answer.length === 0) {
-                setError((prevState) => [...prevState, `Q${index+1} is not Filled!`])
+                setError((prevState) => [...prevState, `Q${index + 1} is not Filled!`])
                 return
             }
             if (answer.question === 'What is your matriculation number?') {
@@ -106,37 +108,22 @@ export default function Survey() {
                     return
                 }
             }
+            list.push(answer.answer)
+
+
         })
 
-        }
+        postResults(module, surveyID, list)
+        console.log(list)
 
 
-
-
-       
-        async function sendData() {
-            await answers.map((answer,index) => {
-                if(index > 0) {
-                    postSurveyResult({
-                        marticNumber: matricNum,
-                        moduleCode: module,
-                        surveyID: surveyID,
-                        questionNumber: index,
-                        resultText: answer.answer
-                    })
-                }
-                
-            })
-        }
-        
-        
-        checkError()
-        sendData()
-        
-        
-        
-        console.log(answers)
     }
+
+
+
+
+
+
 
     return (
         <Container sx={{ mx: "auto", my: 10 }}>
@@ -152,7 +139,7 @@ export default function Survey() {
                         <Grid item xs={12}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
-                                    <Typography color="d0d3d4"  component="span">
+                                    <Typography color="d0d3d4" component="span">
                                         Q{index + 1}. {answer.question}
                                     </Typography>
                                 </Grid>
