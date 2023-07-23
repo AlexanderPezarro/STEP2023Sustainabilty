@@ -122,7 +122,7 @@ routes.post("/api/results", (req, res, next) => {
     if (req.params.moduleCode !== undefined &&
         req.params.surveyID !== undefined &&
         req.params.answers !== undefined) {
-        insertResults(answers.slice(1).map(elem => [req.params.answers[0], req.params.moduleCode, req.params.surveyID, req.params.questionNumber, undefined, elem]))
+        insertResults(answers.slice(1).map((i,elem) => [req.params.answers[0], req.params.moduleCode, req.params.surveyID, i+1, undefined, elem]))
         .then(_ => {
             res.status(200).end(); 
         })
