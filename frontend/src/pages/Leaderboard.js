@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import { Container } from "@mui/material"
 import { getSchools } from '../api';
 import { useEffect, useState } from 'react';
-
+import Table from '../compoments/Table';
+import { Box, Grid, Container, IconButton } from '@mui/material';
 
 
 function TabPanel(props) {
@@ -49,14 +48,13 @@ export default function LeaderBoard() {
 
     useEffect(() => {
         getSchools()
-        .then(res => {
-            setSchools(res.data);
-            console.log(res.data);
-        }).catch(err => {
-            console.log(`Home.js: ${err}`);
-            setSchools(["No schools"]);
-        })
-    },[])
+            .then(res => {
+                setSchools(res.data);
+            }).catch(err => {
+                console.log(`Home.js: ${err}`);
+                setSchools(["No schools"]);
+            })
+    }, [])
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -65,7 +63,7 @@ export default function LeaderBoard() {
     return (
         <Container sx={{ mx: "auto", my: 10 }}>
             <Box
-                sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex' }}
+                sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 400 }}
             >
                 <Tabs
                     orientation="vertical"
@@ -75,13 +73,20 @@ export default function LeaderBoard() {
                     aria-label="Vertical tabs example"
                     sx={{ borderRight: 1, borderColor: 'divider' }}
                 >
-                    {schools.map((school,index) => 
-                        <Tab label={school.name} {...a11yProps({index})} />
+                    {schools.map((school, index) =>
+                        <Tab label={school.name} {...a11yProps({ index })} />
                     )}
                 </Tabs>
-                {schools.map((school,index) => 
+                {schools.map((school, index) =>
                     <TabPanel value={value} index={index}>
-                        <Typography color="d0d3d4" variant="h4" component="span">{school.name}</Typography>
+                        <Grid sx={{ flexGrow: 1 }} container spacing={2}>
+                            <Grid item xs={12}>
+                                <Typography color="d0d3d4" variant="h4" component="span">{school.name}</Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Table />
+                            </Grid>
+                        </Grid>
                     </TabPanel>
                 )}
 
