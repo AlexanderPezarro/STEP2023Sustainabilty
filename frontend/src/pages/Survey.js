@@ -17,13 +17,39 @@ import Alert from '@mui/material/Alert';
 const steps = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const ariaLabel = { 'aria-label': 'description' };
 
-
+const Form = (props) => {
+    console.log(props)
+    switch (props.type) {
+        case 1:
+            return (
+                <OutlinedInput value={props.answer.answer} fullWidth onChange={e => props.updateAnswer(props.answer.question, e.target.value)} />
+            )
+        case 2:
+            return (
+                <FormControl>
+                    <RadioGroup
+                        row
+                        aria-labelledby="demo-row-radio-buttons-group-label"
+                        name="row-radio-buttons-group"
+                        onChange={(e => props.updateAnswer(props.answer.question, e.target.value))}
+                        value={props.answer.answer}
+                    >
+                        {
+                            steps.map((step) => <FormControlLabel value={step} control={<Radio />} label={step} labelPlacement="top" />)
+                        }
+                    </RadioGroup>
+                </FormControl>
+            )
+        default:
+            break;
+    }
+}
 
 
 export default function Survey() {
     const [matricNum, setMatricNum] = useState("")
     const [questions, setQuestions] = useState(['What is your matriculation number?']);
-    const [types,setTypes] = useState([{ question: 'What is your matriculation number?',type: 1}])
+    const [types, setTypes] = useState([1])
     const [module, setModule] = useState("")
     const [course, setCourse] = useState("")
     const [surveyID, setSurveyID] = useState(1)
@@ -49,7 +75,7 @@ export default function Survey() {
                     setQuestions(["No questions"]);
                 } else {
                     res.data.map((data) => {
-                        setTypes((prevState) => [...prevState,data.type])
+                        setTypes((prevState) => [...prevState, data.type])
                     })
                     setQuestions(res.data)
                     console.log("Response", res.data)
@@ -77,17 +103,17 @@ export default function Survey() {
 
     }
 
-    const addType = (question,type) => {
-        console.log(question,type)
-        setTypes((prevState) => [...prevState, { question: question, type: type }]);
+    const addType = (type) => {
+        setTypes((prevState) => [...prevState, type]);
 
     }
 
     React.useEffect(() => {
         setAnswers([{ question: 'What is your matriculation number?', answer: "" }])
+        setTypes([1])
         questions.map((question) => {
             addAnswer(question.question, "")
-            addType(question.question,question.type)
+            addType(question.type)
         })
     }, [questions])
 
@@ -109,10 +135,13 @@ export default function Survey() {
         setError([])
         var list = []
         answers.forEach((answer, index) => {
-            if (answer.answer.length === 0) {
-                setError((prevState) => [...prevState, `Q${index + 1} is not Filled!`])
-                return
+            if (answer.question !== "Please write any comments") {
+                if (answer.answer.length === 0) {
+                    setError((prevState) => [...prevState, `Q${index + 1} is not Filled!`])
+                    return
+                }
             }
+
             if (answer.question === 'What is your matriculation number?') {
                 if (answer.answer.length !== 9 || isNaN(answer.answer)) {
                     setError((prevState) => [...prevState, 'Matriculation number is should be 9 numbers.'])
@@ -125,10 +154,14 @@ export default function Survey() {
         })
 
         postResults(module, surveyID, list)
+        .catch(err => {
+            console.log(err)
+            setError(["Data was not sent"])
+        })
         console.log(list)
-
-
     }
+
+
 
 
 
@@ -155,8 +188,9 @@ export default function Survey() {
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12}>
+                                    <Form type={types[index]} answer={answer} updateAnswer={updateAnswer} />
 
-                                    {index % 2 == 0 ? (<OutlinedInput fullWidth onChange={e => updateAnswer(answer.question, e.target.value)} />) : (
+                                    {/* {index % 2 == 0 ? (<OutlinedInput fullWidth onChange={e => updateAnswer(answer.question, e.target.value)} />) : (
                                         <FormControl>
                                             <RadioGroup
                                                 row
@@ -170,7 +204,7 @@ export default function Survey() {
                                             </RadioGroup>
                                         </FormControl>
 
-                                    )}
+                                    )} */}
                                 </Grid>
                             </Grid>
                         </Grid>)

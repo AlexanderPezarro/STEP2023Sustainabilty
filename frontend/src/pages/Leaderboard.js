@@ -1,5 +1,92 @@
-export default function LeaderBoard() {
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import { Container } from "@mui/material"
+import { getSchools } from '../api';
+import { useEffect, useState } from 'react';
+
+
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
     return (
-        <h1>LeaderBoard</h1>
-    )
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`vertical-tabpanel-${index}`}
+            aria-labelledby={`vertical-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
 }
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.string.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `vertical-tab-${index}`,
+        'aria-controls': `vertical-tabpanel-${index}`,
+    };
+}
+
+export default function LeaderBoard() {
+    const [value, setValue] = useState(0);
+    const [schools, setSchools] = useState(["art"]);
+
+    useEffect(() => {
+        getSchools()
+        .then(res => {
+            setSchools(res.data);
+            console.log(res.data);
+        }).catch(err => {
+            console.log(`Home.js: ${err}`);
+            setSchools(["No schools"]);
+        })
+    },[])
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    return (
+        <Container sx={{ mx: "auto", my: 10 }}>
+            <Box
+                sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex' }}
+            >
+                <Tabs
+                    orientation="vertical"
+                    variant="scrollable"
+                    value={value}
+                    onChange={handleChange}
+                    aria-label="Vertical tabs example"
+                    sx={{ borderRight: 1, borderColor: 'divider' }}
+                >
+                    {schools.map((school,index) => 
+                        <Tab label={school.name} {...a11yProps({index})} />
+                    )}
+                </Tabs>
+                {schools.map((school,index) => 
+                    <TabPanel value={value} index={index}>
+                        <Typography color="d0d3d4" variant="h4" component="span">{school.name}</Typography>
+                    </TabPanel>
+                )}
+
+            </Box>
+        </Container>
+    );
+}
+
