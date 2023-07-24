@@ -15,7 +15,7 @@ export default function Header() {
     const navigate = useNavigate()
 
     return (
-        <AppBar position="static">
+        <AppBar position="static"　sx={{ bgcolor: "#90EE90" }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                    
