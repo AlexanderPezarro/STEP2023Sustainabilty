@@ -75,7 +75,7 @@ CREATE TABLE `results` (
 
 LOCK TABLES `results` WRITE;
 /*!40000 ALTER TABLE `results` DISABLE KEYS */;
-INSERT INTO `results` VALUES ('123456774','CS1002',1,1,NULL,'3'),('123456774','CS1002',1,2,NULL,'5'),('123456774','CS1002',1,3,NULL,'7'),('123456774','CS1002',1,4,NULL,''),('123456777','CS1002',1,1,NULL,'3'),('123456777','CS1002',1,2,NULL,'5'),('123456777','CS1002',1,3,NULL,'7'),('123456777','CS1002',1,4,NULL,'Hello'),('123456788','CS1002',1,1,NULL,'10'),('123456788','CS1002',1,2,NULL,'9'),('123456788','CS1002',1,3,NULL,'8');
+INSERT INTO `results` VALUES ('123456774','CS1002',1,1,NULL,'3'),('123456774','CS1002',1,2,NULL,'5'),('123456774','CS1002',1,3,NULL,'7'),('123456774','CS1002',1,4,NULL,''),('123456777','CS1002',1,1,NULL,'3'),('123456777','CS1002',1,2,NULL,'5'),('123456777','CS1002',1,3,NULL,'7'),('123456777','CS1002',1,4,NULL,'Hello'),('123456788','CS1002',1,1,NULL,'10'),('123456788','CS1002',1,2,NULL,'9'),('123456788','CS1002',1,3,NULL,'8'),('123456788','CS1003',1,1,NULL,'2'),('123456788','CS1003',1,2,NULL,'1'),('123456788','CS1003',1,3,NULL,'3'),('123456788','CS1003',1,4,NULL,'comments'),('123456789','CS1003',1,1,NULL,'1'),('123456789','CS1003',1,2,NULL,'2'),('123456789','CS1003',1,3,NULL,'2'),('123456789','CS1003',1,4,NULL,'comments');
 /*!40000 ALTER TABLE `results` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +163,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`yn27`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `score` AS select `results`.`module_code` AS `module_code`,`results`.`survey_id` AS `survey_id`,`results`.`question_num` AS `question_num`,avg(`results`.`result_text`) AS `avg(result_text)` from `results` group by `results`.`survey_id`,`results`.`question_num` */;
+/*!50001 VIEW `score` AS select `results`.`module_code` AS `module_code`,`results`.`survey_id` AS `survey_id`,`results`.`question_num` AS `question_num`,avg(`results`.`result_text`) AS `avg(result_text)` from `results` where `results`.`question_num` <> '4' group by `results`.`module_code`,`results`.`question_num` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -177,4 +177,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-24 18:38:05
+-- Dump completed on 2023-07-24 19:57:45
