@@ -211,7 +211,7 @@ export default function Survey() {
                 })}
 
                 <Grid item xs={12}>
-                    <Button variant="contained" onClick={hadleSubmit}>Submit</Button>
+                    <Button variant="contained" onClick={hadleSubmit} sx={{ bgcolor: "#90EE90" }}>Submit</Button>
                 </Grid>
             </Grid>
 

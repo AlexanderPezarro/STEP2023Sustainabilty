@@ -15,7 +15,7 @@ export default function Header() {
     const navigate = useNavigate()
 
     return (
-        <AppBar position="static"　sx={{ bgcolor: "#90EE90" }}>
+        <AppBar position="static" sx={{ bgcolor: "#90EE90" }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                    
@@ -34,7 +34,7 @@ export default function Header() {
                             textDecoration: 'none',
                         }}
                     >
-                        Sustainability
+                        EcoRanks
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
