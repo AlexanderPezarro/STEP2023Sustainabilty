@@ -124,7 +124,7 @@ routes.post("/api/results", (req, res, next) => {
     if (req.body.moduleCode !== undefined &&
         req.body.surveyID !== undefined &&
         req.body.answers !== undefined) {
-        insertResults(req.body.answers.slice(1).map((elem,i) => [req.body.answers[0], req.body.moduleCode, req.body.surveyID, i+1, undefined, elem]))
+        insertResults(req.body.answers.slice(1).map((elem,i) => [req.body.answers[0], req.body.moduleCode, req.body.surveyID, i+1, isNaN(elem) ? undefined : elem, isNaN(elem) ? elem : undefined]))
         .then(_ => {
             res.status(200).end(); 
         })
@@ -145,9 +145,9 @@ routes.get("/api/results", (req, res, next) => {
                 const averages = rows.map(row => (
                     row.average
                 ))
-                const average = averages.reduce((p, c) => p+c, 0) / averages.length;
+                const average = averages.reduce((p, c) => p+Number(c), 0) / averages.length;
                 res.json({
-                    ...rows.reduce((a, row) => ({ ...a, [row["question_num"]]: row["average"]}), {}),
+                    ...rows.reduce((a, row) => ({ ...a, [row["question_num"]]: Number(row["average"])}), {}),
                     id: req.query.moduleCode,
                     module_name: module[0].name,
                     average: average

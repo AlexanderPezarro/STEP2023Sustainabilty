@@ -71,5 +71,5 @@ export function insertResults(results) {
 
 export function getScoreForModule(moduleCode) {
     console.log("Query getScore");
-    return pool.query("select module_code, survey_id, question_num, avg(result_text) as average from results where module_code = ? group by module_code, question_num", [moduleCode]);
+    return pool.query("select module_code, survey_id, question_num, avg(result_number) as average from results where module_code = ? group by module_code, question_num", [moduleCode]);
 }
