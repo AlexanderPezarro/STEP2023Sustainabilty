@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { getSchools, getModulesFromSchool, getModulesFromName, getModulesFromCode, getModules, getSurveyQuestions, getSurveyIds, getSurveyCode, insertResult, insertResults } from "./database.js";
+import { getSchools, getModulesFromSchool, getModulesFromName, getModulesFromCode, getModules, getSurveyQuestions, getSurveyIds, getSurveyCode, insertResult, insertResults, getScoreForModule } from "./database.js";
 
 const routes = express.Router();
 
@@ -124,9 +124,38 @@ routes.post("/api/results", (req, res, next) => {
     if (req.body.moduleCode !== undefined &&
         req.body.surveyID !== undefined &&
         req.body.answers !== undefined) {
-        insertResults(req.body.answers.slice(1).map((elem,i) => [req.body.answers[0], req.body.moduleCode, req.body.surveyID, i+1, undefined, elem]))
+        insertResults(req.body.answers.slice(1).map((elem,i) => [req.body.answers[0], req.body.moduleCode, req.body.surveyID, i+1, isNaN(elem) ? undefined : elem, isNaN(elem) ? elem : undefined]))
         .then(_ => {
             res.status(200).end(); 
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send(err);
+        });
+    } else {
+        res.status(400).end();
+    }
+});
+
+routes.get("/api/results", (req, res, next) => {
+    if (req.query.moduleCode !== undefined) {
+        getScoreForModule(req.query.moduleCode)
+        .then(rows => {
+            getModulesFromCode(req.query.moduleCode).then(module => {
+                const averages = rows.map(row => (
+                    row.average
+                ))
+                const average = averages.reduce((p, c) => p+Number(c), 0) / averages.length;
+                res.json({
+                    ...rows.reduce((a, row) => ({ ...a, [row["question_num"]]: Number(row["average"])}), {}),
+                    id: req.query.moduleCode,
+                    module_name: module[0].name,
+                    average: average
+                })
+            }).catch(err => {
+                console.log(err);
+                res.status(500).send(err);
+            })
         })
         .catch(err => {
             console.log(err);
