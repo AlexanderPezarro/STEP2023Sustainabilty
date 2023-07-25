@@ -30,7 +30,7 @@ export default function Header() {
                             fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
-                            color: 'inherit',
+                            color: 'black',
                             textDecoration: 'none',
                         }}
                     >
@@ -45,7 +45,7 @@ export default function Header() {
                                     navigate('/leaderboard')
                                 }
                                 }
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                sx={{ my: 2, color: 'black', display: 'block' }}
                             >
                                 LeaderBoard
                             </Button>
@@ -56,7 +56,7 @@ export default function Header() {
                                     navigate('/aboutus')
                                 }
                                 }
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                sx={{ my: 2, color: 'black', display: 'block' }}
                             >
                                 About Us
                             </Button>
