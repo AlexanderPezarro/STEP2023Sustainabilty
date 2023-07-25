@@ -293,7 +293,6 @@ UNLOCK TABLES;
 /*!50001 SET character_set_results     = utf8mb3 */;
 /*!50001 SET collation_connection      = utf8mb3_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `score` AS select `results`.`module_code` AS `module_code`,`results`.`survey_id` AS `survey_id`,`results`.`question_num` AS `question_num`,avg(`results`.`result_text`) AS `avg(result_text)` from `results` where `results`.`question_num` <> '4' group by `results`.`module_code`,`results`.`question_num` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;

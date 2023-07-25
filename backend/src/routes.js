@@ -124,7 +124,7 @@ routes.post("/api/results", (req, res, next) => {
     if (req.body.moduleCode !== undefined &&
         req.body.surveyID !== undefined &&
         req.body.answers !== undefined) {
-        insertResults(req.body.answers.slice(1).map((elem,i) => [req.body.answers[0], req.body.moduleCode, req.body.surveyID, i+1, isNaN(elem) ? undefined : elem, isNaN(elem) ? elem : undefined]))
+        insertResults(req.body.answers.slice(1).map((elem,i) => [req.body.answers[0], req.body.moduleCode, req.body.surveyID, i+1, (isNaN(elem) || elem === "") ? undefined : elem, (isNaN(elem) || elem === "") ? elem : undefined]))
         .then(_ => {
             res.status(200).end(); 
         })
