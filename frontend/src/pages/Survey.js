@@ -139,7 +139,7 @@ export default function Survey() {
         setError([])
         var list = []
         answers.forEach((answer, index) => {
-            if (answer.question !== "Please write any comments") {
+            if (types[index]=== 2) {
                 if (answer.answer.length === 0) {
                     setError((prevState) => [...prevState, `Q${index + 1} is not Filled!`])
                     return
@@ -164,11 +164,9 @@ export default function Survey() {
             })
             .catch(err => {
                 console.log(err)
-                setError(["Data was not sent"])
+                window.alert("Data was not sent")
                 setSubmitted(false)
             })
-        
-        console.log(list)
     }
 
 
