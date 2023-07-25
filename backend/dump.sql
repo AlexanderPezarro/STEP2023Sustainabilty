@@ -48,6 +48,31 @@ INSERT INTO `module` VALUES ('CS1002','Object-Oriented Programming','Computer Sc
 UNLOCK TABLES;
 
 --
+-- Table structure for table `questions`
+--
+
+DROP TABLE IF EXISTS `questions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `questions` (
+  `id` int(11) NOT NULL,
+  `rank_name` varchar(30) COLLATE utf8_bin DEFAULT NULL,
+  `description` varchar(500) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `questions`
+--
+
+LOCK TABLES `questions` WRITE;
+/*!40000 ALTER TABLE `questions` DISABLE KEYS */;
+INSERT INTO `questions` VALUES (1,'Eco1','Eco1 is .....'),(2,'Eco2','Eco2 is .....'),(3,'Eco3','Eco3 is .....');
+/*!40000 ALTER TABLE `questions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `results`
 --
 
@@ -75,7 +100,7 @@ CREATE TABLE `results` (
 
 LOCK TABLES `results` WRITE;
 /*!40000 ALTER TABLE `results` DISABLE KEYS */;
-INSERT INTO `results` VALUES ('123456774','CS1002',1,1,NULL,'3'),('123456774','CS1002',1,2,NULL,'5'),('123456774','CS1002',1,3,NULL,'7'),('123456774','CS1002',1,4,NULL,''),('123456777','CS1002',1,1,NULL,'3'),('123456777','CS1002',1,2,NULL,'5'),('123456777','CS1002',1,3,NULL,'7'),('123456777','CS1002',1,4,NULL,'Hello'),('123456788','CS1002',1,1,NULL,'10'),('123456788','CS1002',1,2,NULL,'9'),('123456788','CS1002',1,3,NULL,'8'),('123456788','CS1003',1,1,NULL,'2'),('123456788','CS1003',1,2,NULL,'1'),('123456788','CS1003',1,3,NULL,'3'),('123456788','CS1003',1,4,NULL,'comments'),('123456789','CS1003',1,1,NULL,'1'),('123456789','CS1003',1,2,NULL,'2'),('123456789','CS1003',1,3,NULL,'2'),('123456789','CS1003',1,4,NULL,'comments');
+INSERT INTO `results` VALUES ('123456774','CS1002',1,1,NULL,'3'),('123456774','CS1002',1,2,NULL,'5'),('123456774','CS1002',1,3,NULL,'7'),('123456774','CS1002',1,4,NULL,''),('123456777','CS1002',1,1,NULL,'3'),('123456777','CS1002',1,2,NULL,'5'),('123456777','CS1002',1,3,NULL,'7'),('123456777','CS1002',1,4,NULL,'Hello'),('123456788','CS1002',1,1,NULL,'10'),('123456788','CS1002',1,2,NULL,'9'),('123456788','CS1002',1,3,NULL,'8'),('123456788','CS1003',1,1,NULL,'2'),('123456788','CS1003',1,2,NULL,'1'),('123456788','CS1003',1,3,NULL,'3'),('123456788','CS1003',1,4,NULL,'comments'),('123456789','CS1002',1,1,1,NULL),('123456789','CS1002',1,2,2,NULL),('123456789','CS1002',1,3,3,NULL),('123456789','CS1002',1,4,NULL,'Good'),('123456789','CS1003',1,1,NULL,'1'),('123456789','CS1003',1,2,NULL,'2'),('123456789','CS1003',1,3,NULL,'2'),('123456789','CS1003',1,4,NULL,'comments');
 /*!40000 ALTER TABLE `results` ENABLE KEYS */;
 UNLOCK TABLES;
 
