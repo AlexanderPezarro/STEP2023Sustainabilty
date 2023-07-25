@@ -128,7 +128,7 @@ DROP TABLE IF EXISTS `survey`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `survey` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `number` int(11) NOT NULL UNSIGNED,
+  `number` int(11) NOT NULL,
   `question` varchar(500) NOT NULL,
   `type` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`,`number`)
@@ -162,7 +162,6 @@ UNLOCK TABLES;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`yn27`@`%` SQL SECURITY DEFINER */
 /*!50001 VIEW `score` AS select `results`.`module_code` AS `module_code`,`results`.`survey_id` AS `survey_id`,`results`.`question_num` AS `question_num`,avg(`results`.`result_text`) AS `avg(result_text)` from `results` where `results`.`question_num` <> '4' group by `results`.`module_code`,`results`.`question_num` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -185,9 +184,6 @@ create table `questions`(
   description varchar(500),
   question varchar(500),
   PRIMARY key(id)
-)
+);
 
-INSERT into questions values 
-(1,'Eco1','Eco1 is .....','What is question 1?'),
-(2,'Eco2','Eco2 is .....','What is question 2?'),
-(3,'Eco3','Eco3 is .....','What is question 3?');
+INSERT INTO `questions` VALUES (1,'Eco1','Eco1 is .....','What is question 1?'), (2,'Eco2','Eco2 is .....','What is question 2?'), (3,'Eco3','Eco3 is .....','What is question 3?');
