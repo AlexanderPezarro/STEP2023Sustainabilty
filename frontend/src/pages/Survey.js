@@ -157,13 +157,17 @@ export default function Survey() {
 
         })
 
-        postResults(module, surveyID, list)
+            postResults(module, surveyID, list)
+            .then((res) => {
+                window.alert("Sunmitted succesfully")
+                navigate(`/${params.school}/${params.module}`)
+            })
             .catch(err => {
                 console.log(err)
                 setError(["Data was not sent"])
-            }).then((res) => {
-                setSubmitted(true)
+                setSubmitted(false)
             })
+        
         console.log(list)
     }
 
@@ -177,19 +181,7 @@ export default function Survey() {
 
     return (
         <Container sx={{ mx: "auto", my: 10 }}>
-            {submitted ? (
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <Typography color="d0d3d4" variant="h3" component="span">Survey - {module} {course} -</Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Typography color="d0d3d4" variant="h4" component="span">Submitted!</Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Button variant="contained"  sx={{ bgcolor: "#90EE90" }} onClick={ e =>{navigate(`/${params.school}/${params.module}`)}}> Back to Course Page</Button>
-                    </Grid>
-                </Grid>
-            ) : (
+
                 <Grid container spacing={3}>
 
                     <Grid item xs={12}>
@@ -220,8 +212,8 @@ export default function Survey() {
                     <Grid item xs={12}>
                         <Button variant="contained" onClick={hadleSubmit} sx={{ bgcolor: "#90EE90" }}>Submit</Button>
                     </Grid>
-                </Grid >)
-            }
+                </Grid >
+            
         </Container >
     )
 }
