@@ -77,7 +77,7 @@ export default function Home() {
                 </Grid>
                 <Grid item xs={6}>
                     <Item>
-                        <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+                        <List sx={{ width: '100%', maxWidth: 360}}
                             subheader={
                                     <Typography color="d0d3d4" variant="h4" component="span">Find by School</Typography>
                             }
@@ -86,10 +86,13 @@ export default function Home() {
                                     <ListItem
                                         key={school.name}
                                         disableGutters
+                                        sx={{ textDecoration: "none", color: "d0d3d4" }}
                                     >
-                                        <Link to = {`/${school.name}`} key = {school.name}>
-                                        <Typography color="d0d3d4" variant="h5" component="span">{school.name}</Typography>
-                                        </Link>
+                                        <Typography color="d0d3d4" variant="h5" component="span" > 
+                                            <Link to = {`/${school.name}`} key = {school.name}>
+                                                {school.name}
+                                            </Link>
+                                        </Typography>
                                     </ListItem>
                             )}
                         </List>

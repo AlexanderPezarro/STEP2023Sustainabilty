@@ -4,11 +4,6 @@ import { useEffect, useState } from 'react';
 import { getModuleFromSchool, getResults, getRanks } from '../api';
 import Typography from '@mui/material/Typography';
 
-// var rows = [
-//     { id: "CS1002", module_name: 'Object-Oriented Programming', q1: 3, q2: 3 },
-//     { id: "CS1003", module_name: 'Programming with Data', q1: 4, q2: 2 },
-// ];
-
 export default function Table(props) {
     const [modules, setModules] = useState([])
     const [rank, setRank] = useState([])
@@ -73,15 +68,16 @@ export default function Table(props) {
             }
             async function createheader() {
 
-                for (let i in list) {
-                    if (!isNaN(list[i][0])) {
-                        await getRanks(list[i][0]).then((ran) => {
-                            if (ran.data.length > 0) {
-                                initialColumns.push({ id: ran.data[0].id, rank_name: ran.data[0].rank_name })
-                            }
-                        })
-                    }
-                }
+                // for (let i in list) {
+                //     if (!isNaN(list[i][0])) {
+                //         // await getRanks(list[i][0]).then((ran) => {
+                //         //     if (ran.data.length > 0) {
+                //         //         initialColumns.push({ id: ran.data[0].id, rank_name: ran.data[0].rank_name })
+                //         //     }
+                //         // })
+                //         initialColumns.push({ id: i+1, rank_name: `Q${Number(i)+1}`})
+                //     }
+                // }
 
                 return initialColumns
             }
@@ -98,7 +94,7 @@ export default function Table(props) {
                         field: column.id,
                         headerName: column.rank_name,
                         type: 'number',
-                        width: 90,
+                        width: 150,
                     }])
                 })
                 return uniqueColumns;

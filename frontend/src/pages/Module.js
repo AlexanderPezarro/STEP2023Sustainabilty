@@ -61,16 +61,19 @@ export default function Module() {
                 })
                 .then((res) => {
                     setRate([])
-                    for (let i in res) {
-                        if (!isNaN(res[i][0])) {
-                            getRanks(res[i][0]).then((rank) => {
-                                if (rank.data.length > 0) {
-                                    setRate((prevState) => [...prevState, { id: res[i][0], score: res[i][1], rank: rank.data[0].rank_name, des: rank.data[0].description }])
-                                }
-                            })
-                        } else if (res[i][0] === 'average') {
+                    for (let key in array) {
+                        console.log(`Key: ${key}`)
+                        if (!isNaN(array[key][0])) {
+                            setRate((prevState) => [...prevState, { id: key+1, score: array[key][1], rank: `Question ${Number(key)+1}`, des: "" }])
+                            // getRanks(res[i][0]).then((rank) => {
+                            //     if (rank.data.length > 0) {
+                            //         setRate((prevState) => [...prevState, { id: res[i][0], score: res[i][1], rank: rank.data[0].rank_name, des: rank.data[0].description }])
+                            //     }
+                            // })
 
-                            setRate((prevState) => [{ id: 0, score: res[i][1], rank: 'Overall', des: 'This is an average of all ranks.' }, ...prevState])
+                        } else if (array[key][0] === 'average') {
+
+                            setRate((prevState) => [{ id: 0, score: array[key][1], rank: 'Overall', des: 'This is an average of all ranks.' }, ...prevState])
 
                         }
                     }

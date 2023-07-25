@@ -49,7 +49,7 @@ export default function Header() {
                             >
                                 LeaderBoard
                             </Button>
-                             <Button
+                             {/* <Button
                                 key= 'aboutus'
                                 onClick={(e) => {
                                     console.log("click")
@@ -59,7 +59,7 @@ export default function Header() {
                                 sx={{ my: 2, color: 'black', display: 'block' }}
                             >
                                 About Us
-                            </Button>
+                            </Button> */}
                     </Box>
                 </Toolbar>
             </Container>
