@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Container } from "@mui/material"
 import Typography from '@mui/material/Typography';
-import { getModuleFromCode, getResults, getRanks } from "../api";
+import { getModuleFromCode, getResults, getRanks, getComments } from "../api";
 import Rating from '@mui/material/Rating';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -12,7 +12,7 @@ import Grid from '@mui/material/Grid';
 import EnergySavingsLeafIcon from '@mui/icons-material/EnergySavingsLeaf';
 
 const values = [3, 4, 5]
-const comments = ["good", "good2", "good3"]
+// const comments = ["good", "good2", "good3"]
 
 export default function Module() {
     const [module, setModule] = useState(undefined);
@@ -22,6 +22,7 @@ export default function Module() {
         name: "Art in Europe and Beyond to 1600",
         description: "aaaaaaaaaaaaaaaaaaaaaaaa"
     })
+    const [comments, setComments] = useState([])
 
     useEffect(() => {
         setModule(params.module)
@@ -73,6 +74,12 @@ export default function Module() {
 
                         }
                     }
+                })
+                getComments(module)
+                .then(res => {
+                    setComments(res.data);
+                }).catch(err => {
+                    console.log(err);
                 })
         }
     }, [module]);

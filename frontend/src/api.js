@@ -42,3 +42,7 @@ export function getResults(moduleCode) {
 export function getRanks(id) {
     return axios.get(`${apiurl}ranks?id=${id}`);
 }
+
+export function getComments(moduleCode) {
+    return axios.get(`${apiurl}comments?moduleCode=${moduleCode}`);
+}
