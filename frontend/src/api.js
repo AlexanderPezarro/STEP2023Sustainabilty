@@ -34,3 +34,11 @@ export function getSurveyIds() {
 export function postResults(moduleCode, surveyID, answers){
     return axios.post(`${apiurl}results`, {moduleCode, surveyID, answers});
 }
+
+export function getResults(moduleCode) {
+    return axios.get(`${apiurl}results?moduleCode=${moduleCode}`);
+}
+
+export function getRanks(id) {
+    return axios.get(`${apiurl}ranks?id=${id}`);
+}

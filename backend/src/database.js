@@ -73,3 +73,8 @@ export function getScoreForModule(moduleCode) {
     console.log("Query getScore");
     return pool.query("select module_code, survey_id, question_num, avg(result_number) as average from results where module_code = ? group by module_code, question_num", [moduleCode]);
 }
+
+export function getRankFromID(id) {
+    console.log("Query getRanks");
+    return pool.query("select * from questions where id = ?",[id]);
+}

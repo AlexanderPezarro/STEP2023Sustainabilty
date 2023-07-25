@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { getSchools, getModulesFromSchool, getModulesFromName, getModulesFromCode, getModules, getSurveyQuestions, getSurveyIds, getSurveyCode, insertResult, insertResults, getScoreForModule } from "./database.js";
+import { getSchools, getModulesFromSchool, getModulesFromName, getModulesFromCode, getModules, getSurveyQuestions, getSurveyIds, getSurveyCode, insertResult, insertResults, getScoreForModule,getRankFromID } from "./database.js";
 
 const routes = express.Router();
 
@@ -166,4 +166,16 @@ routes.get("/api/results", (req, res, next) => {
     }
 });
 
+routes.get("/api/ranks", (req, res, next) => {
+    if (req.query.id !== undefined) {
+        getRankFromID(req.query.id)
+        .then(rows => {
+            res.send(rows);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send(err);
+        });
+    }
+});
 export default routes;

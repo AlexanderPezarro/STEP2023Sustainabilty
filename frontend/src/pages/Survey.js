@@ -12,12 +12,14 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
+import { useNavigate } from "react-router-dom";
 
 
 const steps = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const ariaLabel = { 'aria-label': 'description' };
 
 const Form = (props) => {
+
     console.log(props)
     switch (props.type) {
         case 1:
@@ -58,6 +60,8 @@ export default function Survey() {
         { question: 'What is your matriculation number?', answer: "" },
     ]);
     const [errors, setError] = useState([])
+    const [submitted, setSubmitted] = useState(false);
+    const navigate = useNavigate();
 
     React.useEffect(() => {
         setModule(params.module)
@@ -154,10 +158,12 @@ export default function Survey() {
         })
 
         postResults(module, surveyID, list)
-        .catch(err => {
-            console.log(err)
-            setError(["Data was not sent"])
-        })
+            .catch(err => {
+                console.log(err)
+                setError(["Data was not sent"])
+            }).then((res) => {
+                setSubmitted(true)
+            })
         console.log(list)
     }
 
@@ -171,53 +177,52 @@ export default function Survey() {
 
     return (
         <Container sx={{ mx: "auto", my: 10 }}>
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <Typography color="d0d3d4" variant="h3" component="span">Survey - {module} {course} -</Typography>
+            {submitted ? (
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <Typography color="d0d3d4" variant="h3" component="span">Survey - {module} {course} -</Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography color="d0d3d4" variant="h4" component="span">Submitted!</Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Button variant="contained"  sx={{ bgcolor: "#90EE90" }} onClick={ e =>{navigate(`/${params.school}/${params.module}`)}}> Back to Course Page</Button>
+                    </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                    <ErrorMessage />
-                </Grid>
-                {answers.map((answer, index) => {
-                    return (
-                        <Grid item xs={12}>
-                            <Grid container spacing={2}>
+            ) : (
+                <Grid container spacing={3}>
+
+                    <Grid item xs={12}>
+                        <Typography color="d0d3d4" variant="h3" component="span">Survey - {module} {course} -</Typography>
+                    </Grid >
+                    <Grid item xs={12}>
+                        <ErrorMessage />
+                    </Grid>
+                    {
+                        answers.map((answer, index) => {
+                            return (
                                 <Grid item xs={12}>
-                                    <Typography color="d0d3d4" component="span">
-                                        Q{index + 1}. {answer.question}
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Form type={types[index]} answer={answer} updateAnswer={updateAnswer} />
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12}>
+                                            <Typography color="d0d3d4" component="span">
+                                                Q{index + 1}. {answer.question}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <Form type={types[index]} answer={answer} updateAnswer={updateAnswer} />
 
-                                    {/* {index % 2 == 0 ? (<OutlinedInput fullWidth onChange={e => updateAnswer(answer.question, e.target.value)} />) : (
-                                        <FormControl>
-                                            <RadioGroup
-                                                row
-                                                aria-labelledby="demo-row-radio-buttons-group-label"
-                                                name="row-radio-buttons-group"
-                                                onChange={(e => updateAnswer(answer.question, e.target.value))}
-                                            >
-                                                {
-                                                    steps.map((step) => <FormControlLabel value={step} control={<Radio />} label={step} labelPlacement="top" />)
-                                                }
-                                            </RadioGroup>
-                                        </FormControl>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>)
+                        })
+                    }
 
-                                    )} */}
-                                </Grid>
-                            </Grid>
-                        </Grid>)
-                })}
-
-                <Grid item xs={12}>
-                    <Button variant="contained" onClick={hadleSubmit} sx={{ bgcolor: "#90EE90" }}>Submit</Button>
-                </Grid>
-            </Grid>
-
-
-
-        </Container>
+                    <Grid item xs={12}>
+                        <Button variant="contained" onClick={hadleSubmit} sx={{ bgcolor: "#90EE90" }}>Submit</Button>
+                    </Grid>
+                </Grid >)
+            }
+        </Container >
     )
 }
 

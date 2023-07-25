@@ -84,7 +84,7 @@ export default function LeaderBoard() {
                                 <Typography color="d0d3d4" variant="h4" component="span">{school.name}</Typography>
                             </Grid>
                             <Grid item xs={12}>
-                                <Table />
+                                <Table school = {school}/>
                             </Grid>
                         </Grid>
                     </TabPanel>

@@ -128,7 +128,7 @@ DROP TABLE IF EXISTS `survey`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `survey` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `number` int(11) NOT NULL,
+  `number` int(11) NOT NULL UNSIGNED,
   `question` varchar(500) NOT NULL,
   `type` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`,`number`)
@@ -178,3 +178,16 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2023-07-24 19:57:45
+
+create table `questions`(
+  id int(11) NOT NULL,
+  rank_name varchar(30),
+  description varchar(500),
+  question varchar(500),
+  PRIMARY key(id)
+)
+
+INSERT into questions values 
+(1,'Eco1','Eco1 is .....','What is question 1?'),
+(2,'Eco2','Eco2 is .....','What is question 2?'),
+(3,'Eco3','Eco3 is .....','What is question 3?');

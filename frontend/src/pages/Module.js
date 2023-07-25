@@ -2,12 +2,14 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Container } from "@mui/material"
 import Typography from '@mui/material/Typography';
-import { getModuleFromCode } from "../api";
+import { getModuleFromCode, getResults, getRanks } from "../api";
 import Rating from '@mui/material/Rating';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+import EnergySavingsLeafIcon from '@mui/icons-material/EnergySavingsLeaf';
 
 const values = [3, 4, 5]
 const comments = ["good", "good2", "good3"]
@@ -15,6 +17,7 @@ const comments = ["good", "good2", "good3"]
 export default function Module() {
     const [module, setModule] = useState(undefined);
     const params = useParams()
+    const [rate, setRate] = useState([])
     const [info, setInfo] = useState({
         name: "Art in Europe and Beyond to 1600",
         description: "aaaaaaaaaaaaaaaaaaaaaaaa"
@@ -46,44 +49,112 @@ export default function Module() {
                         description: "N/A"
                     });
                 })
+            const array = []
+            getResults(module)
+                .then((res) => {
+                    for (const [key, value] of Object.entries(res.data)) {
+                        array.push([`${key}`, `${value}`]);
+                    }
+                    console.log(array)
+                    return array
+                })
+                .then((res) => {
+                    setRate([])
+                    for (let i in res) {
+                        if (!isNaN(res[i][0])) {
+                            getRanks(res[i][0]).then((rank) => {
+                                if (rank.data.length > 0) {
+                                    setRate((prevState) => [...prevState, { id: res[i][0], score: res[i][1], rank: rank.data[0].rank_name, des: rank.data[0].description }])
+                                }
+                            })
+                        } else if (res[i][0] === 'average') {
+
+                            setRate((prevState) => [{ id: 0, score: res[i][1], rank: 'Overall', des: 'This is an average of all ranks.' }, ...prevState])
+
+                        }
+                    }
+                })
         }
     }, [module]);
 
+    useEffect(() => {
+        console.log(rate)
+    }, [rate])
+
     return (
         <Container sx={{ mx: "auto", my: 10 }}>
-            <Typography color="d0d3d4" variant="h4" component="span">{module} - {info.name}</Typography>
-            <br></br>
-            <Typography color="d0d3d4" variant="h4" component="span">Ranks</Typography>
-            {
-                values.map((value, index) => {
-                    return (
-                        <div>
-                            <Typography component="legend">Eco{index}</Typography>
-                            <Rating name="read-only" value={value} readOnly />
-                        </div>
-                    )
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Typography color="d0d3d4" variant="h3" component="span">{module} - {info.name}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <Typography color="d0d3d4" variant="h4" component="span">Ranks</Typography>
+                        </Grid>
 
-                })
-            }
+                        {
+                            rate.map((rate, index) => {
+                                return (
+                                    <Grid item xs={12}>
+                                        <Grid container spacing={1}>
+                                            <Grid item xs={12}>
+                                                <Typography variant="h5" component="legend">{rate.rank}</Typography>
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <Typography component="legend">{rate.des}</Typography>
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <Rating
+                                                    name="read-only" 
+                                                    value={rate.score} 
+                                                    readOnly 
+                                                    size="large" 
+                                                    max={10} 
+                                                    precision={0.1}
+                                                    icon={<EnergySavingsLeafIcon fontSize="inherit" />}
+                                                    emptyIcon={<EnergySavingsLeafIcon fontSize="inherit" />}
+                                                    sx = {{
+                                                        color:"#90EE90"
+                                                    }}
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                )
 
-            <Typography color="d0d3d4" variant="h4" component="span">Comments</Typography>
-            <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                            })
+                        }
 
-                {
-                    comments.map((comment, index) => {
-                        return (
-                            <div>
+                    </Grid>
+                </Grid>
+                <Grid item xs={6}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <Typography color="d0d3d4" variant="h4" component="span">Comments</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+
+                                {
+                                    comments.map((comment, index) => {
+                                        return (
+                                            <div>
+                                                <Divider />
+                                                <ListItem alignItems="flex-start">
+                                                    <ListItemText primary={comment} />
+                                                </ListItem>
+                                            </div>
+                                        )
+
+                                    })
+                                }
                                 <Divider />
-                                <ListItem alignItems="flex-start">
-                                    <ListItemText primary={comment} />
-
-                                </ListItem>
-                            </div>
-                        )
-
-                    })
-                }
-            </List>
+                            </List>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
         </Container>
     )
 }
