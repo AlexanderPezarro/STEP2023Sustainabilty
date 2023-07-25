@@ -187,7 +187,6 @@ UNLOCK TABLES;
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`yn27`@`%` SQL SECURITY DEFINER */
 /*!50001 VIEW `score` AS select `results`.`module_code` AS `module_code`,`results`.`survey_id` AS `survey_id`,`results`.`question_num` AS `question_num`,avg(`results`.`result_text`) AS `avg(result_text)` from `results` where `results`.`question_num` <> '4' group by `results`.`module_code`,`results`.`question_num` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -202,4 +201,14 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-25 12:16:13
+-- Dump completed on 2023-07-24 19:57:45
+
+create table `questions`(
+  id int(11) NOT NULL,
+  rank_name varchar(30),
+  description varchar(500),
+  question varchar(500),
+  PRIMARY key(id)
+);
+
+INSERT INTO `questions` VALUES (1,'Eco1','Eco1 is .....','What is question 1?'), (2,'Eco2','Eco2 is .....','What is question 2?'), (3,'Eco3','Eco3 is .....','What is question 3?');

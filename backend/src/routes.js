@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { getSchools, getModulesFromSchool, getModulesFromName, getModulesFromCode, getModules, getSurveyQuestions, getSurveyIds, getSurveyCode, insertResult, insertResults, getScoreForModule,getRankFromID } from "./database.js";
+import { getSchools, getModulesFromSchool, getModulesFromName, getModulesFromCode, getModules, getSurveyQuestions, getSurveyIds, getSurveyCode, insertResult, insertResults, getScoreForModule,getRankFromID, getComments } from "./database.js";
 
 const routes = express.Router();
 
@@ -158,6 +158,20 @@ routes.get("/api/results", (req, res, next) => {
             })
         })
         .catch(err => {
+            console.log(err);
+            res.status(500).send(err);
+        });
+    } else {
+        res.status(400).end();
+    }
+});
+
+routes.get("/api/comments", (req, res, next) => {
+    if (req.query.moduleCode !== undefined) {
+        getComments(req.query.moduleCode)
+        .then(rows => {
+            res.send(rows.map(row => row["result_text"]))
+        }).catch(err => {
             console.log(err);
             res.status(500).send(err);
         });

@@ -78,3 +78,8 @@ export function getRankFromID(id) {
     console.log("Query getRanks");
     return pool.query("select * from questions where id = ?",[id]);
 }
+
+export function getComments(moduleCode) {
+    console.log("Query getComments");
+    return pool.query("select * from results where module_code = ? and result_text is not null", [moduleCode]);
+}
