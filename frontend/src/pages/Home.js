@@ -8,7 +8,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { useEffect, useState } from 'react';
-import { useParams,Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getSchools } from '../api';
 
 // const schools = ['Arabic', 'Art', 'Biology']
@@ -24,7 +24,9 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function Home() {
     const params = useParams()
-
+    const navigate = useNavigate();
+    const [code, setCode] = useState("")
+    const [name, setName] = useState("")
     const [schools, setSchool] = useState([])
 
     useEffect(() => {
@@ -48,14 +50,26 @@ export default function Home() {
                             <Grid item xs={12}>
                                 <div className="item"><Typography color="d0d3d4" variant="h4" component="span">Search by module code</Typography></div>
                             </Grid>
-                            <Grid item xs={6}> <TextField id="outlined-basic" label="Module Code" variant="outlined" /></Grid>
-                            <Grid item xs={6}><IconButton><SearchIcon fontSize='large' /></IconButton></Grid>
+                            <Grid item xs={6}> <TextField id="outlined-basic" label="Module Code" variant="outlined" onChange={(e) => {setCode(e.target.value)}} /></Grid>
+                            <Grid item xs={6}>
+                                <IconButton onClick={(_) => {
+                                    navigate(`/search?type=code&value=${code}`)
+                                }}>
+                                    <SearchIcon fontSize='large' />
+                                </IconButton>
+                            </Grid>
 
                             <Grid item xs={12}>
                                 <div className="item"><Typography color="d0d3d4" variant="h4" component="span">Search by module name</Typography></div>
                             </Grid>
-                            <Grid item xs={6}> <TextField id="outlined-basic" label="Module Name" variant="outlined" /></Grid>
-                            <Grid item xs={6}><IconButton><SearchIcon fontSize='large' /></IconButton></Grid>
+                            <Grid item xs={6}> <TextField id="outlined-basic" label="Module Name" variant="outlined" onChange={(e) => {setName(e.target.value)}}/></Grid>
+                            <Grid item xs={6}>
+                                <IconButton onClick={(_) => {
+                                    navigate(`/search?type=name&value=${name}`)
+                                }}>
+                                    <SearchIcon fontSize='large' />
+                                </IconButton>
+                            </Grid>
 
                         </Grid>
 

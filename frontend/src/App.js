@@ -11,6 +11,7 @@ import School from "./pages/School";
 import Module from "./pages/Module";
 import Survey from "./pages/Survey";
 import { getModuleFromCode } from "./api";
+import Search from "./pages/Search";
 
 
 const PrivateRoute = ({ children }) => {
@@ -51,6 +52,7 @@ export default function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/aboutus" element={<Aboutus />} />
                         <Route path="/leaderboard" element={<LeaderBoard />} />
+                        <Route path="/search" element={<Search />} />
                         <Route path="/:school" element={<School />} />
                         <Route path="/:school/:module" element={<Module />} />
                         <Route path="/:school/:module/survey/:code" element={<PrivateRoute><Survey /></PrivateRoute>} />
